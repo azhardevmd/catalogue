@@ -5,8 +5,11 @@ pipeline {
         }
     }
     environment {
-        Name = "Azhar"
+        Account_id = "522534289017"
         appVersion = ""
+        Project = "robomart"
+        Component = "catalogue"
+
     }
     options{
         timeout(time: 120, unit: 'SECONDS')
@@ -37,9 +40,16 @@ pipeline {
         stage ('Build Docker image') {
             steps {
                 script {
-                    sh  """
-                        docker build -t catalogue:${appVersion} .
-                """
+                    withAWS(region:'us-east-1',credentials:'aws-cred') {
+                        sh """
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${Account_id}.dkr.ecr.us-east-1.amazonaws.com
+                            docker build -t ${Account_id}.dkr.ecr.us-east-1.amazonaws.com/${Project}/${Component}:${appVersion} .
+                            docker images
+                            docker push ${Account_id}.dkr.ecr.us-east-1.amazonaws.com/${Project}/${Component}:${appVersion}
+
+
+                        """    
+                    }
                 }
             }
         }
