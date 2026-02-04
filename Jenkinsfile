@@ -9,6 +9,7 @@ pipeline {
         appVersion = ""
         PROJECT = "robomart"
         COMPONENT = "catalogue"
+        AWS_ID = "b6c11948-340e-4c43-a12d-1e75652ee3ae"
 
     }
     options{
@@ -40,7 +41,7 @@ pipeline {
         stage ('Build Docker image') {
             steps {
                 script {
-                    withAWS(region:'us-east-1',credentials:'aws-cred') {
+                    withAWS(region:'us-east-1',credentials:${AWS_ID}) {
                         sh """
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
                             docker build -t ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
