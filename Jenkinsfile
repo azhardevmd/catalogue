@@ -5,10 +5,10 @@ pipeline {
         }
     }
     environment {
-        Account_id = "522534289017"
+        ACCOUNT_ID = "522534289017"
         appVersion = ""
-        Project = "robomart"
-        Component = "catalogue"
+        PROJECT = "robomart"
+        COMPONENT = "catalogue"
 
     }
     options{
@@ -42,11 +42,10 @@ pipeline {
                 script {
                     withAWS(region:'us-east-1',credentials:'aws-cred') {
                         sh """
-                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${Account_id}.dkr.ecr.us-east-1.amazonaws.com
-                            docker build -t ${Account_id}.dkr.ecr.us-east-1.amazonaws.com/${Project}/${Component}:${appVersion} .
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+                            docker build -t ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
                             docker images
-                            docker push ${Account_id}.dkr.ecr.us-east-1.amazonaws.com/${Project}/${Component}:${appVersion}
-
+                            docker push ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
 
                         """    
                     }
