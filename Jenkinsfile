@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     sh  """
-                        npm install
+                      npm install
                 """
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
                 script {
                     sh  """
                     echo "Testing is Success"
-                    sleep 5
+                    sleep 2
                 """
                 }
             }
