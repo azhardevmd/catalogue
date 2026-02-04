@@ -37,15 +37,11 @@ pipeline {
         }
 
         stage ('Deploying') {
-            when {
-                expression {
-                    params.ENV == 'dev'
-                }
-            }
             steps {
                 script {
                     sh  """
                     echo "Deploying is Success"
+                    sleep 1
                 """
                 }
             }
