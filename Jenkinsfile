@@ -78,7 +78,7 @@ pipeline {
         //     }
         // }
 
-        stage('Dependabot Security Check') {
+        stage('Dependabot Security Gate') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
@@ -88,7 +88,7 @@ pipeline {
                                 curl -s -L \
                                 -H "Accept: application/vnd.github+json" \
                                 -H "Authorization: Bearer $GITHUB_TOKEN" \
-                                https://api.github.com/repos/azharmd-dev/catalogue/dependabot/alerts
+                                https://api.github.com/repos/azharmd-dev/catalogue/dependabot/alerts?state=open
                             ''',
                             returnStdout: true
                         ).trim()
@@ -96,28 +96,32 @@ pipeline {
                         def alerts = readJSON text: response
 
                         if (alerts.size() == 0) {
-                            echo "✅ No Dependabot vulnerabilities found"
-                        } else {
-                            echo "⚠️ Found ${alerts.size()} Dependabot alert(s)"
-
-                            def highRisk = alerts.findAll {
-                                it.security_advisory.severity in ['high', 'critical']
-                            }
-
-                            if (highRisk.size() > 0) {
-                                echo "❌ High/Critical vulnerabilities detected!"
-                                highRisk.each {
-                                    echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
-                                }
-                                error("Pipeline failed due to security vulnerabilities")
-                            } else {
-                                echo "✅ Only low/medium vulnerabilities found"
-                            }
+                            echo "✅ No open Dependabot vulnerabilities found"
+                            return
                         }
+
+                        echo "⚠️ Found ${alerts.size()} open Dependabot alert(s)"
+
+                        def highRisk = alerts.findAll {
+                            it.security_advisory.severity in ['high', 'critical']
+                        }
+
+                        if (highRisk.size() > 0) {
+                            echo "❌ High/Critical vulnerabilities detected!"
+
+                            highRisk.each {
+                                echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
+                            }
+
+                            error("Pipeline failed due to security vulnerabilities")
+                        }
+
+                        echo "✅ Only low/medium vulnerabilities found — pipeline continues"
                     }
                 }
             }
         }
+
         stage ('Build Docker image') {
             steps {
                 script {
