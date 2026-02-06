@@ -79,17 +79,46 @@ pipeline {
             }
         }
 
-        // stage("Quality Gate Check") {
-        //     steps {
-        //         script {
-        //             // Pause the pipeline and wait for the quality gate status
-        //             def qualityGateStatus = waitForQualityGate abortPipeline: true
-        //             if (qualityGateStatus.status != 'OK') {
-        //                 error "Pipeline aborted due to quality gate failure: ${qualityGateStatus.status}"
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Dependabot Security Check') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+
+                        def response = sh(
+                            script: """
+                                curl -s -L \
+                                -H "Accept: application/vnd.github+json" \
+                                -H "Authorization: Bearer $GITHUB_TOKEN" \
+                                https://api.github.com/repos/azharmd-dev/catalogue/dependabot/alerts
+                            """,
+                            returnStdout: true
+                        ).trim()
+
+                        def alerts = readJSON text: response
+
+                        if (alerts.size() == 0) {
+                            echo "✅ No Dependabot vulnerabilities found"
+                        } else {
+                            echo "⚠️ Found ${alerts.size()} Dependabot alert(s)"
+
+                            def highRisk = alerts.findAll {
+                                it.security_advisory.severity in ['high', 'critical']
+                            }
+
+                            if (highRisk.size() > 0) {
+                                echo "❌ High/Critical vulnerabilities detected!"
+                                highRisk.each {
+                                    echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
+                                }
+                                error("Pipeline failed due to security vulnerabilities")
+                            } else {
+                                echo "✅ Only low/medium vulnerabilities found"
+                            }
+                        }
+                    }
+                }
+            }
+        }
         stage ('Build Docker image') {
             steps {
                 script {
