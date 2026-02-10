@@ -12,7 +12,7 @@ RUN npm install
 # -------------------------
 FROM node:20.19.5-alpine3.22              
 WORKDIR /opt/server                        
-# RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
+RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
 # Create roboshop user & group (non-root best practice)
 RUN addgroup -S roboshop && \ 
     adduser -S roboshop -G roboshop && \
