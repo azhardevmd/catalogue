@@ -154,7 +154,6 @@ pipeline {
             }
         }
 
-    }
         stage ('Testing') {
             steps {
                 script {
