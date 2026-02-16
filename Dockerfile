@@ -24,8 +24,8 @@ ENV MONGO="true" \
 
 COPY --from=build /opt/server /opt/server 
 # Switch to non-root user
-USER roboshop                             
-CMD [ "node", "server.js" ]               
+USER roboshop                    
+CMD [ "node", "server.js" ]           
 
 
 # FROM node:20
