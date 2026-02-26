@@ -1,7 +1,7 @@
 name: feature-pipeline
 on:  [push]
 jobs:
-  feature-pipeline:
+  feature-nodejs-pipeline:
     uses: azharmd-dev/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
     with:
       project: robomart
