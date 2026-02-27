@@ -7,4 +7,5 @@ jobs:
       project: robomart
       component: catalogue
       environment: dev
+    secrets: inherit
 
