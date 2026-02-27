@@ -2,9 +2,10 @@ name: feature-pipeline
 on:  [push]
 jobs:
   feature-nodejs-pipeline:
-    uses: azharmd-dev/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
+    uses: azhardevmd/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
     with:
       project: robomart
       component: catalogue
       environment: dev
+    secrets: inherit
 
