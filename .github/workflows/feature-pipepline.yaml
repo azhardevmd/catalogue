@@ -6,7 +6,17 @@ permissions:
   security-events: read
 jobs:
   feature-nodejs-pipeline:
+    if: github.ref != 'refs/head/main'
     uses: azhardevmd/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
+    with:
+      project: robomart
+      component: catalogue
+      environment: dev
+    secrets: inherit
+  
+  dev-nodejs-pipeline:
+    if: github.ref == 'refs/head/main'
+    uses: azhardevmd/workflows/.github/workflows/dev-nodejs-pipeline.yaml@main
     with:
       project: robomart
       component: catalogue
