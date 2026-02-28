@@ -4,10 +4,10 @@ permissions:
   contents: read
   statuses: write
   security-events: read
-  
+
 jobs:
   feature-nodejs-pipeline:
-    if: github.ref != 'refs/head/main'
+    if: github.ref != 'refs/heads/main'
     uses: azhardevmd/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
     with:
       project: robomart
@@ -16,7 +16,7 @@ jobs:
     secrets: inherit
   
   dev-nodejs-pipeline:
-    if: github.ref == 'refs/head/main'
+    if: github.ref == 'refs/heads/main'
     uses: azhardevmd/workflows/.github/workflows/dev-nodejs-pipeline.yaml@main
     with:
       project: robomart
