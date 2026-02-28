@@ -1,5 +1,8 @@
 name: feature-pipeline
 on:  [push]
+permissions:
+  contents: read
+  statuses: write
 jobs:
   feature-nodejs-pipeline:
     uses: azhardevmd/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
