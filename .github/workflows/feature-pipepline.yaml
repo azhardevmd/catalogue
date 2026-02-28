@@ -3,6 +3,7 @@ on:  [push]
 permissions:
   contents: read
   statuses: write
+  security-events: read
 jobs:
   feature-nodejs-pipeline:
     uses: azhardevmd/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
