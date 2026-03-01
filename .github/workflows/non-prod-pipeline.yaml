@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   non-prod-pipeline:
-    if: github.ref != 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     uses: azhardevmd/workflows/.github/workflows/non-prod-pipeline.yaml@main
     with:
       project: robomart
