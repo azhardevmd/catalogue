@@ -16,7 +16,7 @@ permissions:
 jobs:
   prod:
     # allow only main branch
-    if: github.ref == 'refs/heads/main'
+    if: github.ref_name == 'main'
 
     # this enables approval gate
     environment: prod
