@@ -1,0 +1,32 @@
+name: Non-Prod-Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_id:
+        description: "First 9 chars commit SHA"
+        required: true
+      environment:
+        description: "Select environment"
+        required: true
+        type: choice
+        options:
+          - qa
+          - sit
+          - uat
+
+permissions:
+  contents: read
+  statuses: write
+  security-events: read
+
+jobs:
+  non-prod-pipeline:
+    if: github.ref != 'refs/heads/main'
+    uses: azhardevmd/workflows/.github/workflows/non-prod-pipeline.yaml@main
+    with:
+      project: robomart
+      component: catalogue
+      commit_id: ${{ inputs.commit_id }}      # pass commit
+      environment: ${{ inputs.environment }}  # pass env
+    secrets: inherit
