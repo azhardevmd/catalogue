@@ -6,6 +6,7 @@ on:
       commit_id:
         description: "First 9 chars commit SHA to deploy"
         required: true
+        type: string
 
 permissions:
   contents: read
@@ -13,13 +14,14 @@ permissions:
   security-events: read
 
 jobs:
-  prod-pipeline:
-    # allow ONLY main branch
+  prod:
+    # allow only main branch
     if: github.ref == 'refs/heads/main'
 
-    # this enables environment protection + approvals
+    # this enables approval gate
     environment: prod
 
+    # CALL reusable workflow
     uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
 
     with:
