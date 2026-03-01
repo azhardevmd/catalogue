@@ -28,15 +28,18 @@ This service is part of a microservices architecture and includes:
 ---
 
 ## 📂 Project Structure
+
+```text
 catalogue/
-│── .github/workflows/ # GitHub Actions workflows
-│── db/ # Database related files
-│── Dockerfile # Container build definition
-│── Jenkinsfile # Jenkins pipeline
-│── server.js # Application entry point
-│── package.json # Node dependencies
-│── sonar-project.properties # SonarQube config
-│── .security-baseline.json # Security baseline config
+├── .github/workflows/        # GitHub Actions workflows
+├── db/                       # Database related files
+├── Dockerfile                # Container build definition
+├── Jenkinsfile               # Jenkins pipeline
+├── server.js                 # Application entry point
+├── package.json              # Node dependencies
+├── sonar-project.properties  # SonarQube config
+└── .security-baseline.json   # Security baseline config
+```
 
 ---
 
