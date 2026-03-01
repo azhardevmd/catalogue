@@ -14,9 +14,9 @@ permissions:
   security-events: read
 
 jobs:
-  prod:
-    if: github.ref_name == 'main'
-    environment: dev   # test approval here first
+  deploy:
+    if: ${{ github.ref_name == 'main' }}
+    environment: dev
 
     uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
 
