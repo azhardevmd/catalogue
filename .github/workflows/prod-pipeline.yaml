@@ -15,19 +15,15 @@ permissions:
 
 jobs:
   prod:
-    # allow only main branch
     if: github.ref_name == 'main'
+    environment: dev   # test approval here first
 
-    # this enables approval gate
-    environment: prod
-
-    # CALL reusable workflow
     uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
 
     with:
       project: robomart
       component: catalogue
       commit_id: ${{ inputs.commit_id }}
-      environment: prod
+      environment: dev
 
     secrets: inherit
