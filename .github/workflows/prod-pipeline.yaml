@@ -1,0 +1,31 @@
+name: Prod-Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_id:
+        description: "First 9 chars commit SHA to deploy"
+        required: true
+
+permissions:
+  contents: read
+  statuses: write
+  security-events: read
+
+jobs:
+  prod-pipeline:
+    # allow ONLY main branch
+    if: github.ref == 'refs/heads/main'
+
+    # this enables environment protection + approvals
+    environment: prod
+
+    uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
+
+    with:
+      project: robomart
+      component: catalogue
+      commit_id: ${{ inputs.commit_id }}
+      environment: prod
+
+    secrets: inherit
