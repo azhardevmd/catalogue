@@ -7,6 +7,11 @@ on:
         description: "Commit SHA to promote to PROD"
         required: true
 
+#REQUIRED for reusable workflow
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   prod:
     uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
@@ -14,5 +19,5 @@ jobs:
       project: robomart
       component: catalogue
       commit_id: ${{ inputs.commit_id }}
-      environment: dev
+      environment: dev   # ❗ MUST be prod
     secrets: inherit
