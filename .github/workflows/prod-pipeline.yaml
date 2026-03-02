@@ -1,29 +1,18 @@
-name: Prod-Pipeline
+name: prod-release
 
 on:
   workflow_dispatch:
     inputs:
       commit_id:
-        description: "First 9 chars commit SHA to deploy"
+        description: "Commit SHA to promote to PROD"
         required: true
-        type: string
-
-permissions:
-  contents: read
-  statuses: write
-  security-events: read
 
 jobs:
-  deploy:
-    if: ${{ github.ref_name == 'main' }}
-    environment: dev
-
+  prod:
     uses: azhardevmd/workflows/.github/workflows/prod-pipeline.yaml@main
-
     with:
       project: robomart
       component: catalogue
       commit_id: ${{ inputs.commit_id }}
       environment: dev
-
     secrets: inherit
