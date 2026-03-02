@@ -7,7 +7,6 @@ on:
         description: "Commit SHA to promote to PROD"
         required: true
 
-#REQUIRED for reusable workflow
 permissions:
   contents: read
   statuses: write
@@ -19,5 +18,6 @@ jobs:
       project: robomart
       component: catalogue
       commit_id: ${{ inputs.commit_id }}
-      environment: dev   # ❗ MUST be prod
+      environment: dev #This must be "prod"
+      source_repo: azhardevmd/catalogue
     secrets: inherit
